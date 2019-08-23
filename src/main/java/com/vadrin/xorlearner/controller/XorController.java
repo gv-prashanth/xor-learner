@@ -5,8 +5,9 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Controller;
 
-import com.vadrin.neuroevolution.commons.exceptions.InvalidInputException;
-import com.vadrin.neuroevolution.neat.NEAT;
+import com.vadrin.neuroevolution.controllers.NEAT;
+import com.vadrin.neuroevolution.models.exceptions.InvalidInputException;
+
 
 @Controller
 public class XorController implements ApplicationRunner {
@@ -21,9 +22,9 @@ public class XorController implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		neat.instantiateNEAT(150, 2, 1);
-		neat.sortedBestGenomeInPool().forEach(g -> System.out
-				.println(g.getFitnessScore() + "|" + g.getSortedNodeGenes().size() + "|" + g.getId()));
+		neat.instantiateNEAT(250, 2, 1);
+		neat.sortedBestGenomeInPool().forEach(
+				g -> System.out.println(g.getFitnessScore() + "|" + g.getNodeGenesSorted().size() + "|" + g.getId()));
 		System.out.println("-----------------------------------------------");
 		for (int i = 0; i < 1000; i++) {
 			neat.getGenomes().forEach(genome -> {
@@ -40,14 +41,14 @@ public class XorController implements ApplicationRunner {
 			});
 			neat.stepOneGeneration();
 			neat.sortedBestGenomeInPool().stream().limit(1).forEach(g -> System.out
-					.println(g.getFitnessScore() + "|" + g.getSortedNodeGenes().size() + "|" + g.getId()));
+					.println(g.getFitnessScore() + "|" + g.getNodeGenesSorted().size() + "|" + g.getId()));
 			System.out.println("-----------------------------------------------");
 		}
 	}
 
 	private double calculateFitness(double[] output00, double[] output01, double[] output10, double[] output11) {
-		return Math.pow(4d - (Math.abs(output00[0] - 0d) + Math.abs(output01[0] - 1d) + Math.abs(output10[0] - 1d)
-				+ Math.abs(output11[0] - 0d)), 2);
+		return Math.pow(4d - (Math.abs(output00[0] - 0d) + Math.abs(output01[0] - 1d)
+				+ Math.abs(output10[0] - 1d) + Math.abs(output11[0] - 0d)), 2);
 	}
 
 }
