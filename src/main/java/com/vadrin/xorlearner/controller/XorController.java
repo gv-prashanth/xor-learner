@@ -23,10 +23,7 @@ public class XorController implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		neat.instantiateNEAT(250, 2, 1);
-		neat.sortedBestGenomeInPool().forEach(
-				g -> System.out.println(g.getFitnessScore() + "|" + g.getNodeGenesSorted().size() + "|" + g.getId()));
-		System.out.println("-----------------------------------------------");
+		neat.instantiateNEAT(150, 2, 1);
 		for (int i = 0; i < 1000; i++) {
 			neat.getGenomes().forEach(genome -> loadFitness(genome));
 			neat.stepOneGeneration();
