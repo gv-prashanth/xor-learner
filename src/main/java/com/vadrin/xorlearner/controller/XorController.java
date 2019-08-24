@@ -6,6 +6,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Controller;
 
 import com.vadrin.neuroevolution.controllers.NEAT;
+import com.vadrin.neuroevolution.models.Genome;
 import com.vadrin.neuroevolution.models.exceptions.InvalidInputException;
 
 
@@ -27,28 +28,26 @@ public class XorController implements ApplicationRunner {
 				g -> System.out.println(g.getFitnessScore() + "|" + g.getNodeGenesSorted().size() + "|" + g.getId()));
 		System.out.println("-----------------------------------------------");
 		for (int i = 0; i < 1000; i++) {
-			neat.getGenomes().forEach(genome -> {
-				try {
-					double[] output00 = neat.process(genome.getId(), input00);
-					double[] output01 = neat.process(genome.getId(), input01);
-					double[] output10 = neat.process(genome.getId(), input10);
-					double[] output11 = neat.process(genome.getId(), input11);
-					double fitnessToSet = calculateFitness(output00, output01, output10, output11);
-					neat.setFitnessScore(genome.getId(), fitnessToSet);
-				} catch (InvalidInputException e) {
-					e.printStackTrace();
-				}
-			});
+			neat.getGenomes().forEach(genome -> loadFitness(genome));
 			neat.stepOneGeneration();
 			neat.sortedBestGenomeInPool().stream().limit(1).forEach(g -> System.out
 					.println(g.getFitnessScore() + "|" + g.getNodeGenesSorted().size() + "|" + g.getId()));
 			System.out.println("-----------------------------------------------");
 		}
 	}
-
-	private double calculateFitness(double[] output00, double[] output01, double[] output10, double[] output11) {
-		return Math.pow(4d - (Math.abs(output00[0] - 0d) + Math.abs(output01[0] - 1d)
-				+ Math.abs(output10[0] - 1d) + Math.abs(output11[0] - 0d)), 2);
+	
+	private void loadFitness(Genome genome) {
+		try {
+			double[] output00 = neat.process(genome.getId(), input00);
+			double[] output01 = neat.process(genome.getId(), input01);
+			double[] output10 = neat.process(genome.getId(), input10);
+			double[] output11 = neat.process(genome.getId(), input11);
+			double fitnessToSet = Math.pow(4d - (Math.abs(output00[0] - 0d) + Math.abs(output01[0] - 1d)
+			+ Math.abs(output10[0] - 1d) + Math.abs(output11[0] - 0d)), 2);
+			genome.setFitnessScore(fitnessToSet);
+		} catch (InvalidInputException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
