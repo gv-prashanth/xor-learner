@@ -44,7 +44,7 @@ public class XorController implements ApplicationRunner {
 								: 1);
 			});
 			System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
-			System.out.println("---------------------"+neat.getGenomes().size()+"--------------------------");
+			System.out.println(neat.getGeneration()+">--------------------"+neat.getGenomes().size()+"--------------------------");
 			if (prevGenBest > thisGenBest.getFitnessScore()) {
 				System.out.println("BIG ISSUE");
 				break;
