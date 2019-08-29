@@ -1,7 +1,9 @@
 package com.vadrin.xorlearner.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -31,11 +33,11 @@ public class XorController implements ApplicationRunner {
 		for (int i = 0; i < 1000; i++) {
 			neat.getGenomes().forEach(genome -> loadFitness(genome));
 			neat.stepOneGeneration();
-			Genome thisGenBest = neat.sortedBestGenomeInPool().stream().limit(1).findFirst().get();
+			Genome thisGenBest = sortedBestGenomeInPool().stream().limit(1).findFirst().get();
 			System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
 					+ thisGenBest.getId());
 			Map<Integer, Integer> nodesMap = new HashMap<Integer, Integer>();
-			neat.sortedBestGenomeInPool().forEach(g -> {
+			sortedBestGenomeInPool().forEach(g -> {
 				nodesMap.put(g.getNodeGenesSorted().size(),
 						nodesMap.containsKey(g.getNodeGenesSorted().size())
 								? nodesMap.get(g.getNodeGenesSorted().size()) + 1
@@ -64,6 +66,12 @@ public class XorController implements ApplicationRunner {
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Genome> sortedBestGenomeInPool() {
+		return neat.getGenomes().stream()
+				.sorted((a, b) -> Double.compare(b.getFitnessScore(), a.getFitnessScore()))
+				.collect(Collectors.toList());
 	}
 
 }
