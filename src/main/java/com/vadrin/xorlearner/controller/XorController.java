@@ -30,7 +30,7 @@ public class XorController implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		neat.instantiateNEAT(150, 2, 1);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			neat.getGenomes().forEach(genome -> loadFitness(genome));
 			neat.stepOneGeneration();
 			Genome thisGenBest = sortedBestGenomeInPool().stream().limit(1).findFirst().get();
@@ -44,7 +44,7 @@ public class XorController implements ApplicationRunner {
 								: 1);
 			});
 			System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
-			System.out.println(neat.getGeneration()+">--------------------"+neat.getGenomes().size()+"--------------------------");
+			System.out.println("------------------------"+neat.getGeneration()+" generation finished------------------");
 			if (prevGenBest > thisGenBest.getFitnessScore()) {
 				System.out.println("BIG ISSUE");
 				break;
