@@ -5,17 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.vadrin.neuroevolution.controllers.NEAT;
 import com.vadrin.neuroevolution.models.Genome;
 import com.vadrin.neuroevolution.models.exceptions.InvalidInputException;
 
-@Controller
-public class XorController implements ApplicationRunner {
+@RestController
+public class XorController{
 
 	private static final double[] input00 = { 0d, 0d };
 	private static final double[] input01 = { 0d, 1d };
@@ -25,35 +27,36 @@ public class XorController implements ApplicationRunner {
 	@Autowired
 	private NEAT neat;
 
-	private double prevGenBest = 0d;
-
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	@PostConstruct
+	public void instantiate() {
 		neat.instantiateNEAT(150, 2, 1);
-		for (int i = 0; i < 10000; i++) {
-			neat.getGenomes().forEach(genome -> loadFitness(genome));
-			neat.stepOneGeneration();
-			Genome thisGenBest = sortedBestGenomeInPool().stream().limit(1).findFirst().get();
-			System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
-					+ thisGenBest.getId());
-			Map<Integer, Integer> nodesMap = new HashMap<Integer, Integer>();
-			sortedBestGenomeInPool().forEach(g -> {
-				nodesMap.put(g.getNodeGenesSorted().size(),
-						nodesMap.containsKey(g.getNodeGenesSorted().size())
-								? nodesMap.get(g.getNodeGenesSorted().size()) + 1
-								: 1);
-			});
-			System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
-			System.out.println("------------------------"+neat.getGeneration()+" generation finished------------------");
-			if (prevGenBest > thisGenBest.getFitnessScore()) {
-				System.out.println("BIG ISSUE");
-				break;
-			} else {
-				prevGenBest = thisGenBest.getFitnessScore();
-			}
-		}
 	}
-
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/neat")
+	public List<Genome> stepOneGeneration() {
+		neat.getGenomes().forEach(genome -> loadFitness(genome));
+		neat.stepOneGeneration();
+		Genome thisGenBest = sortedBestGenomeInPool().stream().limit(1).findFirst().get();
+		System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
+				+ thisGenBest.getId());
+		Map<Integer, Integer> nodesMap = new HashMap<Integer, Integer>();
+		sortedBestGenomeInPool().forEach(g -> {
+			nodesMap.put(g.getNodeGenesSorted().size(),
+					nodesMap.containsKey(g.getNodeGenesSorted().size())
+							? nodesMap.get(g.getNodeGenesSorted().size()) + 1
+							: 1);
+		});
+		System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
+		System.out.println("------------------------"+neat.getGeneration()+" generation finished------------------");
+		return sortedBestGenomeInPool();
+	}
+	
+	private List<Genome> sortedBestGenomeInPool() {
+		return neat.getGenomes().stream()
+				.sorted((a, b) -> Double.compare(b.getFitnessScore(), a.getFitnessScore()))
+				.collect(Collectors.toList());
+	}
+	
 	private void loadFitness(Genome genome) {
 		try {
 			double[] output00 = neat.process(genome.getId(), input00);
@@ -66,12 +69,6 @@ public class XorController implements ApplicationRunner {
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public List<Genome> sortedBestGenomeInPool() {
-		return neat.getGenomes().stream()
-				.sorted((a, b) -> Double.compare(b.getFitnessScore(), a.getFitnessScore()))
-				.collect(Collectors.toList());
 	}
 
 }

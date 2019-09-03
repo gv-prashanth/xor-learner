@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://visjs.github.io/vis-network/dist/vis-network.min.js"></script>
+<link
+	href="https://visjs.github.io/vis-network/dist/vis-network.min.css"
+	rel="stylesheet" type="text/css" />
+<title>XOR Learner</title>
+<style>
+.mynetwork {
+	width: 300px;
+	height: 300px;
+	border: 1px solid lightgray;
+	float: left;
+}
+
+.center {
+	position: relative;
+}
+
+.center div {
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.textOutput {
+	font-family: Calibri;
+	flex: 15%;
+	border: thick solid grey;
+	border-radius: 8px;
+	margin: 10px;
+	padding: 10px;
+	background: #F0F0F0;
+}
+
+ul li {
+	margin: 7px;
+}
+
+.image {
+	flex: 70%;
+	font-family: Calibri;
+	border: thick solid grey;
+	border-radius: 8px;
+	margin: 10px;
+	padding: 10px;
+	background: #F0F0F0;
+}
+
+.notification {
+	color: green;
+}
+</style>
+</head>
+<body>
+	<h1>XOR Learner</h1>
+
+	<div id="info">
+		<b>A NEAT based genetic algorithm which learns to output XOR of
+			two inputs </b>
+	</div>
+	<div style="display: flex;">
+		<div id="textOutput" class="textOutput">
+			<b>Actions</b>
+			<ul>
+				<li><button id="create" type="button">Create a Random Pool</button></li>
+				<li><button id="train1" type="button">Step a Generation</button></li>
+			</ul>
+			<input type="checkbox" id="train4">Keep Generating
+			<div id="notification2" class="notification"></div>
+		</div>
+		<div class="image" id="image">
+			<div id="manage" class="manage">
+				<b>Top 15 Genomes in the pool</b>
+			</div>
+			<div id="notification3" class="notification"></div>
+			<div id="result"></div>
+		</div>
+	</div>
+</body>
+<script src="javascript.js"></script>
+</html>
