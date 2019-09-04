@@ -49,7 +49,7 @@ public class XorController{
 							: 1);
 		});
 		System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
-		System.out.println("------------------------"+pool.getGENERATION()+" generation finished------------------");
+		System.out.println("------------------------"+pool.getReferenceGenerationCounter()+" generation finished------------------");
 		return sortedBestGenomeInPool();
 	}
 	
