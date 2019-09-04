@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vadrin.neuroevolution.controllers.NEAT;
 import com.vadrin.neuroevolution.models.Genome;
+import com.vadrin.neuroevolution.models.Pool;
 import com.vadrin.neuroevolution.models.exceptions.InvalidInputException;
-import com.vadrin.neuroevolution.services.PoolService;
 
 @RestController
 public class XorController{
@@ -26,18 +26,18 @@ public class XorController{
 	@Autowired
 	private NEAT neat;
 	
-	private PoolService poolService;
+	private Pool pool;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/neat")
 	public List<Genome> instantiate() {
-		this.poolService = new PoolService(150, 2, 1);
+		this.pool = new Pool(150, 2, 1);
 		return sortedBestGenomeInPool();
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/neat")
 	public List<Genome> stepOneGeneration() {
-		poolService.getGenomes().forEach(genome -> loadFitness(genome));
-		neat.stepOneGeneration(poolService);
+		pool.getGenomes().forEach(genome -> loadFitness(genome));
+		neat.stepOneGeneration(pool);
 		Genome thisGenBest = sortedBestGenomeInPool().stream().limit(1).findFirst().get();
 		System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
 				+ thisGenBest.getId());
@@ -49,12 +49,12 @@ public class XorController{
 							: 1);
 		});
 		System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
-		System.out.println("------------------------"+poolService.getGENERATION()+" generation finished------------------");
+		System.out.println("------------------------"+pool.getGENERATION()+" generation finished------------------");
 		return sortedBestGenomeInPool();
 	}
 	
 	private List<Genome> sortedBestGenomeInPool() {
-		return poolService.getGenomes().stream()
+		return pool.getGenomes().stream()
 				.sorted((a, b) -> Double.compare(b.getFitnessScore(), a.getFitnessScore()))
 				.collect(Collectors.toList());
 	}
