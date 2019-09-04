@@ -8,7 +8,18 @@ $('#train1').mousedown(function(e) {
 
 function createRandomPool() {
 	document.getElementById("notification2").innerHTML = "Constructing a random pool. Please wait...";
-	document.getElementById("notification2").innerHTML = "Random Pool created. You can see the Pool to the right.";
+	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
+	// instance
+	xmlhttp.open("POST", "/neat");
+	xmlhttp.setRequestHeader("Content-Type", "application/json");
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("notification2").innerHTML ="Random Pool created. You can see the Pool to the right.";
+			var jsonResponse = JSON.parse(this.responseText);
+			printGenomes(jsonResponse);
+		}
+	};
+	xmlhttp.send();
 }
 
 function train(type) {
@@ -34,7 +45,7 @@ function printGenomes(jsonResponse) {
 	document.getElementById("result").innerHTML = "";
 	document.getElementById("notification3").innerHTML = "Best Fitness Score is: "
 			+ jsonResponse[0]['fitnessScore'];
-	for (var j = 0; j < 15; j++) {
+	for (var j = 0; j < 8; j++) {
 		printSingleGenome(jsonResponse[j]);
 	}
 }
