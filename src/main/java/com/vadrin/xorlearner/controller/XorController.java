@@ -1,9 +1,7 @@
 package com.vadrin.xorlearner.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,34 +27,21 @@ public class XorController{
 	private Pool pool;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/neat")
-	public List<Genome> instantiate() {
+	public Pool instantiate() {
 		this.pool = new Pool(150, 2, 1);
-		return sortedBestGenomeInPool();
+		return this.pool;
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/neat")
-	public List<Genome> stepOneGeneration() {
+	public Pool stepOneGeneration() {
 		pool.getGenomes().forEach(genome -> loadFitness(genome));
 		neat.stepOneGeneration(pool);
-		Genome thisGenBest = sortedBestGenomeInPool().stream().limit(1).findFirst().get();
+		Genome thisGenBest = pool.getSortedGenomes().stream().limit(1).findFirst().get();
 		System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
 				+ thisGenBest.getId());
-		Map<Integer, Integer> nodesMap = new HashMap<Integer, Integer>();
-		sortedBestGenomeInPool().forEach(g -> {
-			nodesMap.put(g.getNodeGenesSorted().size(),
-					nodesMap.containsKey(g.getNodeGenesSorted().size())
-							? nodesMap.get(g.getNodeGenesSorted().size()) + 1
-							: 1);
-		});
-		System.out.println("Number of Genomes with Node Sizes: " + nodesMap);
+		System.out.println("Number of Genomes with Node Sizes: " + pool.getNodesMap());
 		System.out.println("------------------------"+pool.getReferenceGenerationCounter()+" generation finished------------------");
-		return sortedBestGenomeInPool();
-	}
-	
-	private List<Genome> sortedBestGenomeInPool() {
-		return pool.getGenomes().stream()
-				.sorted((a, b) -> Double.compare(b.getFitnessScore(), a.getFitnessScore()))
-				.collect(Collectors.toList());
+		return pool;
 	}
 	
 	private void loadFitness(Genome genome) {
