@@ -56,7 +56,7 @@ function printGenomes(jsonResponse) {
 	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['sortedGenomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+jsonResponse['nodesMap'];
 
 	
-	for (var j = 0; j < 2; j++) {
+	for (var j = 0; j < 150; j++) {
 		printSingleGenome(jsonResponse['sortedGenomes'][j]);
 	}
 }
@@ -116,7 +116,7 @@ function printSingleGenome(jsonResponseSingle) {
 		xconnections.push({
 			"from" : item.fromNode.id,
 			"to" : item.toNode.id,
-			"label" : item.weight.toFixed(1).toString(),
+			"label" : item.referenceInnovationNumber.toString(),
 			"width" : 3,
 			"arrows":'to'
 		});
