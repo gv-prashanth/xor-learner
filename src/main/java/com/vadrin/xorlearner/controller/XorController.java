@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vadrin.neuroevolution.controllers.NEAT;
 import com.vadrin.neuroevolution.models.Genome;
 import com.vadrin.neuroevolution.models.Pool;
 import com.vadrin.neuroevolution.models.exceptions.InvalidInputException;
+import com.vadrin.neuroevolution.services.NEAT;
 
 @RestController
 public class XorController{
@@ -36,7 +36,7 @@ public class XorController{
 	public Pool stepOneGeneration() {
 		pool.getGenomes().forEach(genome -> loadFitness(genome));
 		neat.stepOneGeneration(pool);
-		Genome thisGenBest = pool.getSortedGenomes().stream().limit(1).findFirst().get();
+		Genome thisGenBest = pool.getGenomes().stream().limit(1).findFirst().get();
 		System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
 				+ thisGenBest.getId());
 		System.out.println("Number of Genomes with Node Sizes: " + pool.getNodesMap());

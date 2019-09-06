@@ -45,19 +45,19 @@ function printGenomes(jsonResponse) {
 	document.getElementById("result").innerHTML = "";
 	
 	const m = new Map();
-	for (var j = 0; j < jsonResponse['sortedGenomes'].length; j++) {
-		if(m.has(jsonResponse['sortedGenomes'][j]['referenceSpeciesNumber'])){
-			m.set(jsonResponse['sortedGenomes'][j]['referenceSpeciesNumber'],m.get(jsonResponse['sortedGenomes'][j]['referenceSpeciesNumber'])+1);
+	for (var j = 0; j < jsonResponse['genomes'].length; j++) {
+		if(m.has(jsonResponse['genomes'][j]['referenceSpeciesNumber'])){
+			m.set(jsonResponse['genomes'][j]['referenceSpeciesNumber'],m.get(jsonResponse['genomes'][j]['referenceSpeciesNumber'])+1);
 		}else{
-			m.set(jsonResponse['sortedGenomes'][j]['referenceSpeciesNumber'], 1);
+			m.set(jsonResponse['genomes'][j]['referenceSpeciesNumber'], 1);
 		}
 	}
 	
-	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['sortedGenomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+jsonResponse['nodesMap'];
+	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['genomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+jsonResponse['nodesMap'];
 
 	
-	for (var j = 0; j < 150; j++) {
-		printSingleGenome(jsonResponse['sortedGenomes'][j]);
+	for (var j = 0; j < 2; j++) {
+		printSingleGenome(jsonResponse['genomes'][j]);
 	}
 }
 
