@@ -45,15 +45,21 @@ function printGenomes(jsonResponse) {
 	document.getElementById("result").innerHTML = "";
 	
 	const m = new Map();
+	const n = new Map();
 	for (var j = 0; j < jsonResponse['genomes'].length; j++) {
+		if(n.has(jsonResponse['genomes'][j]['nodeGenes'].length)){
+			n.set(jsonResponse['genomes'][j]['nodeGenes'].length, n.get(jsonResponse['genomes'][j]['nodeGenes'].length)+1);
+		}else{
+			n.set(jsonResponse['genomes'][j]['nodeGenes'].length, 1);
+		}
 		if(m.has(jsonResponse['genomes'][j]['referenceSpeciesNumber'])){
-			m.set(jsonResponse['genomes'][j]['referenceSpeciesNumber'],m.get(jsonResponse['genomes'][j]['referenceSpeciesNumber'])+1);
+			m.set(jsonResponse['genomes'][j]['referenceSpeciesNumber'], m.get(jsonResponse['genomes'][j]['referenceSpeciesNumber'])+1);
 		}else{
 			m.set(jsonResponse['genomes'][j]['referenceSpeciesNumber'], 1);
 		}
 	}
 	
-	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['genomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+jsonResponse['nodesMap'];
+	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['genomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+ JSON.stringify(Array.from( n.entries()));;
 
 	
 	for (var j = 0; j < 2; j++) {
@@ -69,8 +75,8 @@ function printSingleGenome(jsonResponseSingle) {
 	// create an array with nodes
 	var xnodes = [];
 	var level = 0;
-	for ( var i in jsonResponseSingle['nodeGenesSorted']) {
-		var item = jsonResponseSingle['nodeGenesSorted'][i];
+	for ( var i in jsonResponseSingle['nodeGenes']) {
+		var item = jsonResponseSingle['nodeGenes'][i];
 		if (item.type == "INPUT") {
 			color = "LightGreen";
 			xnodes.push({
@@ -81,8 +87,8 @@ function printSingleGenome(jsonResponseSingle) {
 			});
 		}
 	}
-	for ( var i in jsonResponseSingle['nodeGenesSorted']) {
-		var item = jsonResponseSingle['nodeGenesSorted'][i];
+	for ( var i in jsonResponseSingle['nodeGenes']) {
+		var item = jsonResponseSingle['nodeGenes'][i];
 		if (item.type == "HIDDEN") {
 			level++;
 			color = "LightBlue";
@@ -95,8 +101,8 @@ function printSingleGenome(jsonResponseSingle) {
 		}
 	}
 	level++;
-	for ( var i in jsonResponseSingle['nodeGenesSorted']) {
-		var item = jsonResponseSingle['nodeGenesSorted'][i];
+	for ( var i in jsonResponseSingle['nodeGenes']) {
+		var item = jsonResponseSingle['nodeGenes'][i];
 		if (item.type == "OUTPUT") {
 			color = "lightsalmon";
 			xnodes.push({
@@ -111,8 +117,8 @@ function printSingleGenome(jsonResponseSingle) {
 
 	// create an array with edges
 	var xconnections = [];
-	for ( var i in jsonResponseSingle['connectionGenesSorted']) {
-		var item = jsonResponseSingle['connectionGenesSorted'][i];
+	for ( var i in jsonResponseSingle['connectionGenes']) {
+		var item = jsonResponseSingle['connectionGenes'][i];
 		xconnections.push({
 			"from" : item.fromNode.id,
 			"to" : item.toNode.id,

@@ -36,11 +36,6 @@ public class XorController{
 	public Pool stepOneGeneration() {
 		pool.getGenomes().forEach(genome -> loadFitness(genome));
 		neat.stepOneGeneration(pool);
-		Genome thisGenBest = pool.getGenomes().stream().limit(1).findFirst().get();
-		System.out.println(thisGenBest.getFitnessScore() + "|" + thisGenBest.getNodeGenesSorted().size() + "|"
-				+ thisGenBest.getId());
-		System.out.println("Number of Genomes with Node Sizes: " + pool.getNodesMap());
-		System.out.println("------------------------"+pool.getReferenceGenerationCounter()+" generation finished------------------");
 		return pool;
 	}
 	
