@@ -1,5 +1,7 @@
 package com.vadrin.xorlearner.controller;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ public class XorController{
 	
 	private Pool pool;
 
+	@PostConstruct
 	@RequestMapping(method = RequestMethod.POST, value = "/neat")
 	public Pool instantiate() {
 		this.pool = new Pool(150, 2, 1);
