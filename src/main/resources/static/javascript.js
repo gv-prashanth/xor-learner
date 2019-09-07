@@ -10,6 +10,12 @@ $('#identify').mousedown(function(e) {
 	identify();
 });
 
+$('#train4').click(function(e) {
+	if (!document.getElementById("train4").checked) {
+		document.getElementById("train1").disabled = false;
+	}
+});
+
 function identify(){
 	document.getElementById("notification4").innerHTML = "Running the input on the network. Please wait...";
 	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
@@ -26,7 +32,7 @@ function identify(){
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("notification4").innerHTML ="Following is the resut for given input";
 			var resp = JSON.parse(this.responseText);
-			document.getElementById("result2").innerHTML =resp[0].toFixed(5);
+			document.getElementById("result2").innerHTML =resp[0].toFixed(1);
 		}
 	};
 	xmlhttp.send();
@@ -49,6 +55,10 @@ function createRandomPool() {
 }
 
 function train(type) {
+	if (document.getElementById("train4").checked) {
+		document.getElementById("train1").disabled = true;
+	}
+	
 	document.getElementById("notification2").innerHTML = "Stepping forward a generation. Please wait...";
 	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
 	// instance
@@ -173,7 +183,7 @@ function printSingleGenome(jsonResponseSingle) {
             layout: {
                 hierarchical: {
                     direction: "LR",
-                    levelSeparation: 75
+//                    levelSeparation: 75
                 }
             },
             physics:false
