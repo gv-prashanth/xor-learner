@@ -12,10 +12,9 @@
 <title>XOR Learner</title>
 <style>
 .mynetwork {
-	width: 400px;
 	height: 300px;
 	border: 1px solid lightgray;
-	float: left;
+/* 	float: left; */
 }
 
 .center {
@@ -46,7 +45,7 @@ ul li {
 }
 
 .image {
-	flex: 70%;
+	flex: 35%;
 	font-family: Calibri;
 	border: thick solid grey;
 	border-radius: 8px;
@@ -74,16 +73,36 @@ ul li {
 				<li><button id="create" type="button">Create a Random Pool</button></li>
 				<li><button id="train1" type="button">Step a Generation</button></li>
 			</ul>
-			<input type="checkbox" id="train4">Keep Generating
+			<input type="checkbox" id="train4">Keep on stepping generation
 			<div id="notification2" class="notification"></div>
 		</div>
 		<div class="image" id="image">
 			<div id="manage" class="manage">
-				<b>Few best Genomes in the pool</b>
+				<b>Best Genome in the pool</b>
 			</div><br>
-			<div id="notification3" class="notification"></div><br>
-			<div id="result"></div>
+			<div id="result"></div><br>
+			<div id="notification3" class="notification"></div>
 		</div>
+		
+		
+		<div class="image" id="image2">
+			<div id="manage2" class="manage">
+				<b>Test Yourself:</b><br><br>
+				<select id="input1">
+				  <option value="0">0</option>
+				  <option value="1">1</option>
+				</select>
+				<select id="input2">
+				  <option value="0">0</option>
+				  <option value="1">1</option>
+				</select>
+				<button id="identify" type="button">Test</button>
+			</div><br>
+			<b><div id="notification4" class="notification"></div></b><br> <b><div
+					id="result2"></div></b>
+		</div>
+		
+		
 	</div>
 </body>
 <script src="javascript.js"></script>

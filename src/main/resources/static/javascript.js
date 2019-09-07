@@ -6,6 +6,32 @@ $('#train1').mousedown(function(e) {
 	train("neat");
 });
 
+$('#identify').mousedown(function(e) {
+	identify();
+});
+
+function identify(){
+	document.getElementById("notification4").innerHTML = "Running the input on the network. Please wait...";
+	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
+	// instance
+	
+	var e = document.getElementById("input1");
+	var input1 = e.options[e.selectedIndex].value;
+	var f = document.getElementById("input2");
+	var input2 = f.options[f.selectedIndex].value;
+	
+	xmlhttp.open("GET", "/output?input1="+input1+"&input2="+input2);
+	xmlhttp.setRequestHeader("Content-Type", "application/json");
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("notification4").innerHTML ="Following is the resut for given input";
+			var resp = JSON.parse(this.responseText);
+			document.getElementById("result2").innerHTML =resp[0].toFixed(5);
+		}
+	};
+	xmlhttp.send();
+}
+
 function createRandomPool() {
 	document.getElementById("notification2").innerHTML = "Constructing a random pool. Please wait...";
 	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
@@ -62,7 +88,7 @@ function printGenomes(jsonResponse) {
 	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['genomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+ JSON.stringify(Array.from( n.entries()));;
 
 	
-	for (var j = 0; j < 2; j++) {
+	for (var j = 0; j < 1; j++) {
 		printSingleGenome(jsonResponse['genomes'][j]);
 	}
 }

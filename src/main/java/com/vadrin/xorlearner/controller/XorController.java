@@ -1,11 +1,9 @@
 package com.vadrin.xorlearner.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vadrin.neuroevolution.models.Genome;
@@ -37,6 +35,14 @@ public class XorController{
 		pool.getGenomes().forEach(genome -> loadFitness(genome));
 		neat.stepOneGeneration(pool);
 		return pool;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/output")
+	public double[] calculate(@RequestParam("input1") double input1, @RequestParam("input2") double input2) throws InvalidInputException {
+		double[] input = new double[2];
+		input[0] = input1;
+		input[1] = input2;
+		return neat.process(pool.getGenomes().get(0), input);
 	}
 	
 	private void loadFitness(Genome genome) {
