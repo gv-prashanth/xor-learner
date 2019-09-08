@@ -98,7 +98,7 @@ function printGenomes(jsonResponse) {
 	document.getElementById("notification3").innerHTML = "Generation finished: " + jsonResponse['referenceGenerationCounter'] + "<br>Best fitness in pool: "+ jsonResponse['genomes'][0]['fitnessScore']+"<br>Species population: "+[...m.values()]+"<br>Nodes Map is: "+ JSON.stringify(Array.from( n.entries()));;
 
 	
-	for (var j = 0; j < 1; j++) {
+	for (var j = 0; j < jsonResponse['genomes'].length; j++) {
 		printSingleGenome(jsonResponse['genomes'][j]);
 	}
 }
