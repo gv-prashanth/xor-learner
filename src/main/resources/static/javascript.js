@@ -16,6 +16,8 @@ $('#train4').click(function(e) {
 	}
 });
 
+var jsonResponse;
+
 function identify(){
 	document.getElementById("notification4").innerHTML = "Running the input on the network. Please wait...";
 	var xmlhttp = new XMLHttpRequest(); // new HttpRequest
@@ -30,9 +32,10 @@ function identify(){
 	xmlhttp.setRequestHeader("Content-Type", "application/json");
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("notification4").innerHTML ="Following is the resut for given input";
 			var resp = JSON.parse(this.responseText);
-			document.getElementById("result2").innerHTML =resp[0].toFixed(1);
+			document.getElementById("result2").innerHTML = "";
+			document.getElementById("notification4").innerHTML ="The resut on best Genome for given input is "+resp[0].toFixed(1);
+			printSingleGenome(jsonResponse['genomes'][0], document.getElementById("result2"), "mynetwork2");
 		}
 	};
 	xmlhttp.send();
@@ -47,7 +50,7 @@ function createRandomPool() {
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("notification2").innerHTML ="Random Pool created. You can see the Pool to the right.";
-			var jsonResponse = JSON.parse(this.responseText);
+			jsonResponse = JSON.parse(this.responseText);
 			printGenomes(jsonResponse);
 		}
 	};
@@ -67,7 +70,7 @@ function train(type) {
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById("notification2").innerHTML = "Generation progressed. You can see the Pool to the right.";
-			var jsonResponse = JSON.parse(this.responseText);
+			jsonResponse = JSON.parse(this.responseText);
 			printGenomes(jsonResponse);
 			if (document.getElementById("train4").checked) {
 				train(type);
@@ -99,14 +102,13 @@ function printGenomes(jsonResponse) {
 
 	
 	for (var j = 0; j < jsonResponse['genomes'].length; j++) {
-		printSingleGenome(jsonResponse['genomes'][j]);
+		printSingleGenome(jsonResponse['genomes'][j], document.getElementById("result"), "mynetwork");
 	}
 }
 
-function printSingleGenome(jsonResponseSingle) {
+function printSingleGenome(jsonResponseSingle, result, className) {
 	var mynetwork = document.createElement("div");
-	mynetwork.className = "mynetwork";
-	var result = document.getElementById("result");
+	mynetwork.className = className;
 	result.appendChild(mynetwork);
 	// create an array with nodes
 	var xnodes = [];
