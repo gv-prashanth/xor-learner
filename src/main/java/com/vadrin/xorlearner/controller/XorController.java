@@ -28,16 +28,16 @@ public class XorController{
 
 	@PostConstruct
 	@RequestMapping(method = RequestMethod.POST, value = "/neat")
-	public Genome instantiate() {
+	public Pool instantiate() {
 		this.pool = new Pool(150, 2, 1);
-		return this.pool.getGenomes().get(0);
+		return this.pool;
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/neat")
-	public Genome stepOneGeneration() {
+	public Pool stepOneGeneration() {
 		pool.getGenomes().forEach(genome -> loadFitness(genome));
 		neat.stepOneGeneration(pool);
-		return pool.getGenomes().get(0);
+		return pool;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/output")
