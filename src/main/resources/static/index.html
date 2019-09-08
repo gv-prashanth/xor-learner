@@ -15,10 +15,10 @@
 	width: 50px;
 	height: 50px;
 	border: 1px solid lightgray;
- 	float: left;
+	float: left;
 }
 
-.mynetwork2{
+.mynetwork2 {
 	height: 300px;
 	border: 1px solid lightgray;
 }
@@ -69,46 +69,54 @@ ul li {
 	<h1>XOR Learner</h1>
 
 	<div id="info">
-		<b>A NEAT based genetic algorithm which learns to output XOR of
-			two inputs </b>
+		<b>A <a
+			href="https://en.wikipedia.org/wiki/Neuroevolution_of_augmenting_topologies">NEAT</a>
+			based genetic algorithm which learns to output XOR of two inputs. You
+			can begin by creating a random pool of genomes.
+		</b>
 	</div>
 	<div style="display: flex;">
 		<div id="textOutput" class="textOutput">
 			<b>Actions</b>
 			<ul>
-				<li><button id="create" type="button">Create a Random Pool</button></li>
-				<li><button id="train1" type="button">Step a Generation</button></li>
+				<li><button id="create" type="button">Create a Random
+						Pool</button></li>
+				<li><button id="train1" type="button">Step a
+						Generation</button></li>
 			</ul>
-			<input type="checkbox" id="train4">Keep on stepping generation<br><br>
+			<input type="checkbox" id="train4">Keep on stepping
+			generation<br>
+			<br>
 			<div id="notification2" class="notification"></div>
 		</div>
 		<div class="image" id="image">
 			<div id="manage" class="manage">
 				<b>Best Genome in the pool</b>
-			</div><br>
-			<div id="notification3" class="notification"></div><br>
+			</div>
+			<br>
+			<div id="notification3" class="notification"></div>
+			<br>
 			<div id="result"></div>
 		</div>
-		
-		
+
+
 		<div class="image" id="image2">
 			<div id="manage2" class="manage">
-				<b>Test Yourself:</b><br><br>
-				<select id="input1">
-				  <option value="0">0</option>
-				  <option value="1">1</option>
-				</select>
-				<select id="input2">
-				  <option value="0">0</option>
-				  <option value="1">1</option>
+				<b>Test Yourself:</b><br>
+				<br> <select id="input1">
+					<option value="0">0</option>
+					<option value="1">1</option>
+				</select> <select id="input2">
+					<option value="0">0</option>
+					<option value="1">1</option>
 				</select>
 				<button id="identify" type="button">Test</button>
-			</div><br>
-			<b><div id="notification4" class="notification"></div></b><br> <b><div
-					id="result2"></div></b>
+			</div>
+			<br> <b><div id="notification4" class="notification"></div></b><br>
+			<b><div id="result2"></div></b>
 		</div>
-		
-		
+
+
 	</div>
 </body>
 <script src="javascript.js"></script>

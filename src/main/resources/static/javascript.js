@@ -73,12 +73,16 @@ function train(type) {
 			jsonResponse = JSON.parse(this.responseText);
 			printGenomes(jsonResponse);
 			if (document.getElementById("train4").checked) {
-				train(type);
+				var event = new Event('doAgain');
+				document.getElementById("notification3").dispatchEvent(event);
+				//train(type);
 			}
 		}
 	};
 	xmlhttp.send();
 }
+
+document.getElementById("notification3").addEventListener('doAgain', function(){ train("neat"); });
 
 function printGenomes(jsonResponse) {
 	document.getElementById("result").innerHTML = "";
