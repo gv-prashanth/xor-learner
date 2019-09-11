@@ -192,7 +192,10 @@ function printSingleGenome(jsonResponseSingle, result, className) {
 //                    levelSeparation: 75
                 }
             },
-            physics:false
+            interaction: {dragNodes: false, dragView: false, hoverConnectedEdges: false, selectable :false, selectConnectedEdges: false, zoomView: false},
+            physics: {
+                enabled: false
+            },
         };
 	var network = new vis.Network(container, data, options);
 }
